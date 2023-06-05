@@ -14,7 +14,17 @@ class TinyInt extends Type {
 	 * @return string
 	 */
 	public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) {
-		return 'TINYINT' . ( ! empty($fieldDeclaration['unsigned']) ? ' UNSIGNED' : '');
+		if (isset($fieldDeclaration['length'])) {
+		    $length = $fieldDeclaration['length'];
+		} else {
+		    $length = 4;
+		}
+
+		if (isset($fieldDeclaration['unsigned']) && $fieldDeclaration['unsigned']) {
+		    return "TINYINT($length) UNSIGNED";
+		} else {
+		    return "TINYINT($length)";
+		}
 	}
 	
 	/**
